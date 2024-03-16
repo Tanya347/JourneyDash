@@ -64,7 +64,7 @@ const Home = () => {
                 <div className="map">
                     <div className="search">
                         <div className="search-bar">
-                            <input placeholder='Enter endpoint' type="text" name='place' id='place' value={value} onChange={(e) => setValue(e.target.value)}/>
+                            <input placeholder='Search places' type="text" name='place' id='place' value={value} onChange={(e) => setValue(e.target.value)}/>
                         </div>
                         <div className="searches">
                             {
@@ -90,6 +90,7 @@ const Home = () => {
                         </Map>
                     </Link>
                 </div>
+            <h1 className='head'>Recommendations for you</h1>
             <div className="recommendations">
                 {mockData.map((d, index) => (
                     <RecCard key={index} image={d.image} name={d.name} />

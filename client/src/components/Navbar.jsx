@@ -18,6 +18,9 @@ const Navbar = () => {
             <label htmlFor="menu-bar"><FontAwesomeIcon icon={faBars} className="icon" /></label>
             <nav className='navbar'>
                 <ul>
+                    <Link to="/">
+                        <li><p>Home</p></li>
+                    </Link>
                     <Link to="/dashboard">
                         <li><p>Dashboard</p></li>
                     </Link>
