@@ -21,21 +21,6 @@ const Destination = () => {
 
   return (
     <div>
-      <div className="display-map">
-        <input placeholder='Enter endpoint' type="text" name='place' id='place' value={value} onChange={(e) => setValue(e.target.value)}/>
-      </div>
-
-      <div className="">
-        {
-          places?.map((items, index) => {
-            return (
-              <div key={index} onClick={() =>handleClick(items)}>
-                <p>{items.place_name}</p>
-              </div>
-            )
-          })
-        }
-      </div>
 
       <div className="map">
       <Map
