@@ -25,6 +25,7 @@ const Home = () => {
         const promise = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`)
         const data = await promise.json();
         setPlaces(data.features);
+        console.log(data)
     }
 
     const handleClick = (query) => {

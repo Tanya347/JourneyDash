@@ -1,40 +1,156 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+import { faMoneyBill1Wave, faWalking } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Navbar from '../components/Navbar';
+import "../styles/destination.scss"
 import Map, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
 const Destination = () => {
-  const [places, setPlaces] = useState([]);
-  const [value, setValue] = useState("")
-  useEffect(() =>{
-    getPlaces();
-  },[value])
-  console.log(places)
 
-  const getPlaces = async() => {
-    const promise = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${value}.json?access_token=pk.eyJ1IjoidGFuZ2xlZHZpbmV6eiIsImEiOiJjbHRzdjRtYzAwcjl2Mm5vYW1hNDhza3kxIn0.GB7H7hpV4fw2CMRGQppeKw`)
-    const data = await promise.json();
-    setPlaces(data.features);
-  }
+  const [viewState, setViewState] = React.useState({
+    latitude: 35.6764,
+    longitude: 139.7300,
+    zoom: 10
+  });
 
-  const handleClick = () => {
+  const [accommodationPrice, setAccommodationPrice] = useState(0);
+  const [flightDeparturePrice, setFlightDeparturePrice] = useState(0);
+  const [flightReturnPrice, setFlightReturnPrice] = useState(0);
+  const [transportPrice, setTransportPrice] = useState(0);
+  const [mealsPrice, setMealsPrice] = useState(0);
+  const [activitiesPrice, setActivitiesPrice] = useState(0);
 
-  }
+  const calculateTotalBudget = () => {
+    return (
+      parseFloat(accommodationPrice) + parseFloat(flightDeparturePrice) + parseFloat(flightReturnPrice) +
+      parseFloat(transportPrice) + parseFloat(mealsPrice) + parseFloat(activitiesPrice)
+    );
+  };
 
   return (
-    <div>
+    <div className='destination'>
+      <Navbar />
+      <div className="destination-container">
+        <div className="header">
+          <img src="https://media.geeksforgeeks.org/wp-content/uploads/20240317094412/traffic-tokyo-cityscape-night-japan_335224-2-compressed.jpg" alt="" />
+          <div className="details">
+            <h1>Tokyo, Japan</h1>
+            <p>Tokyo, the capital of Japan, is a vibrant metropolis where traditional culture meets futuristic innovation. It boasts iconic landmarks like the Tokyo Tower and Skytree, bustling districts like Shibuya and Shinjuku, serene shrines and temples, and a diverse culinary scene. Tokyo is a dynamic blend of history, technology, and culture.</p>
+            <p><span>Vibrant</span><span>Modern</span><span>Bustling</span><span>Electric</span><span>Cultural</span></p>
+            <section>
+              <FontAwesomeIcon icon={faMoneyBill1Wave} className="icon" />
+              <span>$600</span>
+              <FontAwesomeIcon icon={faWalking} className="icon" />
+              <span>2-3 days</span>
+            </section>
+          </div>
+        </div>
+        <div className="location-map">
+          <Map
+            {...viewState}
+            onMove={evt => setViewState(evt.viewState)}
+            style={{width: 1500, height: 300}}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+            mapboxAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
+          >
+            <Marker className="marker" longitude={viewState.longitude} latitude={viewState.latitude} color="red" />
+          </Map>
+        </div>
 
-      <div className="map">
-      <Map
-        initialViewState={{
-          latitude: 37.8,
-          longitude: -122.4,
-          zoom: 14
-        }}
-        style={{width: 800, height: 600}}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
-        mapboxAccessToken="pk.eyJ1IjoidGFuZ2xlZHZpbmV6eiIsImEiOiJjbHRzdjRtYzAwcjl2Mm5vYW1hNDhza3kxIn0.GB7H7hpV4fw2CMRGQppeKw"
-      >
-        <Marker className="marker" longitude={77.2090057} latitude={28.6138954} color="red" />
-      </Map>
+
+        <div className="plan-trip-container">
+          <h1>Start Planning Trip to Tokyo</h1>
+            <div className="form-container">
+                <div className="plan-input">
+                  <label>Start Date:</label>
+                  <input type="date" />
+                </div>
+                <div className="plan-input">
+                  <label>End Date:</label>
+                  <input type="date" />
+                </div>
+                <div className="plan-input">
+                  <label>No of People:</label>
+                  <input type="number" />
+                </div>
+              
+              <div>
+              <h3>Accommodation</h3>
+
+                <div className="plan-input">
+                  <label>Accommodation Name:</label>
+                  <input type="text"  />
+                </div>
+                <div className="plan-input">
+                  <label>Price: $</label>
+                  <input type="number" value={accommodationPrice} onChange={(e) => setAccommodationPrice(e.target.value)} />
+                </div>
+              </div>
+              <div>
+              <h3>Flights</h3>
+
+                <div className="plan-input">
+                  <label htmlFor>Enter Flight Name: </label>
+                  <input type="text" />
+                </div>
+                <div className="plan-input">
+                  <label>Flight Departure Price: $</label>
+                  <input type="number" value={flightDeparturePrice} onChange={(e) => setFlightDeparturePrice(e.target.value)} />
+                </div>
+                <div className="plan-input">
+                  <label htmlFor>Enter Flight Name: </label>
+                  <input type="text" />
+                </div>
+                <div className="plan-input">
+                  <label>Flight Return Price: $</label>
+                  <input type="number" value={flightReturnPrice} onChange={(e) => setFlightReturnPrice(e.target.value)} />
+                </div>
+              </div>
+              <div>
+              <h3>Transportation</h3>
+
+                <div className="plan-input">
+                  <label>Transport Type</label>
+                  <input type="text" />
+                </div>
+                <div className="plan-input">
+                  <label>Transport Cost: $</label>
+                  <input type="number" value={transportPrice} onChange={(e) => setTransportPrice(e.target.value)} />
+                </div>
+              </div>
+              <div>
+              <h3>Meals & Food</h3>
+
+                <div className="plan-input">
+                  <label htmlFor>Enter Meals to Try: </label>
+                  <input type="text" />
+                </div>
+                <div className="plan-input">
+                  <label>Meals & Snacks Price: $</label>
+                  <input type="number" value={mealsPrice} onChange={(e) => setMealsPrice(e.target.value)} />
+                </div>
+              </div>
+              <div>
+                <h3>Activities & Tourist Spots</h3>
+                <div className="plan-input">
+                    <label htmlFor>Enter Activities to Try: </label>
+                    <input type="text" />
+                  </div>
+                  <div className="plan-input">
+                    <label htmlFor>Enter Tourist Spots to Explore: </label>
+                    <input type="text" />
+                  </div>
+                  <div className="plan-input">
+                  <label>Activities & Tourist Spots Price: $</label>
+                  <input type="number" value={activitiesPrice} onChange={(e) => setActivitiesPrice(e.target.value)} />
+                </div>
+              </div>
+              <div>
+                <h2>Total Budget: {calculateTotalBudget()}</h2>
+              </div>
+            </div>
+        </div>
       </div>
     </div>
   )
